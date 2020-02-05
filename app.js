@@ -6,15 +6,51 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Engineer");
 
 
+// Run function 
+
+init();
+
+async function init() {
+    try {
+        let {name} = await promptName();
+        let {id} = await promptID();
+        let {email} = await promptEmail();
+        const {role} = await promptRole();
+        switch(role) {
+            case "Manager":
+                const {officeNumber} = await promptManager(role);
+                break;
+            case "Engineer":
+                const {github} = await promptEngineer(role);
+                break;
+            case "Intern":
+                const {school} = await promptIntern(role);
+                break;
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
 
 // Inquirer prompts for user inputs
 function promptName() {
     const name = inquirer.prompt({
         type: "input",
-        message: "What is your Employee's name?",
+        message: "What is your Employee's fist and last name?",
         name: "name"
     });
     return name;
+}
+
+function promptID() {
+    const id = inquirer.prompt({
+        type: "input",
+        message: "What is your Employee's ID number?",
+        name: "id"
+    });
+    return id;
 }
 
 function promptEmail() {
@@ -29,7 +65,7 @@ function promptEmail() {
 function promptRole(){
     const role = inquirer.prompt({
         type: "list",
-        message: "What is your Employee's position?",
+        message: "What is your Employee's role?",
         name: "role",
         choices: ["Manager", "Engineer", "Intern"]
     });
@@ -58,7 +94,7 @@ function promptIntern() {
     const school = inquirer.prompt ({
         type: "input",
         message: "Where does the Intern attend?",
-        name: "attend"
+        name: "school"
     })
     return school;
 }
