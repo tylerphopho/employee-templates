@@ -93,7 +93,7 @@ function promptEngineer() {
 function promptIntern() {
     const school = inquirer.prompt ({
         type: "input",
-        message: "Where does the Intern attend?",
+        message: "What school does the Intern attend?",
         name: "school"
     })
     return school;
