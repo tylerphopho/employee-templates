@@ -18,13 +18,13 @@ async function init() {
         const {role} = await promptRole();
         switch(role) {
             case "Manager":
-                const {officeNumber} = await promptManager(role);
+                const {officeNumber} = await promptManager(name, id, email, role);
                 break;
             case "Engineer":
-                const {github} = await promptEngineer(role);
+                const {github} = await promptEngineer(name, id, email, role);
                 break;
             case "Intern":
-                const {school} = await promptIntern(role);
+                const {school} = await promptIntern(name, id, email, role);
                 break;
         }
     }
