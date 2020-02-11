@@ -12,7 +12,6 @@ const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const generateHTML = require("./templates/generateHTML");
-const generateCard = require("./templates/generateHTML");
 let employeeArray = [];
 let employeeCards = "";
 
@@ -78,6 +77,8 @@ function promptManager() {
         name: "officeNumber",
         validate: validateNumber
     });
+
+    // console.log(managerPrompt);
     return managerPrompt;
 }
 
@@ -111,18 +112,22 @@ async function init() {
             let {email} = await promptEmail();
             const {role} = await promptRole();
             switch(role) {
+
                 case "Manager":
                     let {managerPrompt} = await promptManager(role);
                     let newManager = new Manager(name, id, email, role, managerPrompt)
                     employeeArray.push(newManager)
                     console.log("New Manager added!");
+                    console.log(newManager, "NM")
                     break;
+
                 case "Engineer":
                     let {engineerPrompt} = await promptEngineer(role);
                     let newEngineer = new Engineer(name, id, email, role, engineerPrompt)
                     employeeArray.push(newEngineer)
                     console.log("New Engineer added!");
                     break;
+
                 case "Intern":
                     let {internPrompt} = await promptIntern(role);
                     let newIntern = new Intern(name, id, email, role, internPrompt)
@@ -145,26 +150,26 @@ console.log(employeeArray)
 
 let employeeCards = employeeArray.map((employee) =>{
     console.log(employee)
-    let title;
+    let role;
     let htmlText;
-    if(employee.title === "Manager"){
-        title = employee.officeNumber;
+    if(employee.role === "Manager"){
+        role = employee.officeNumber;
         htmlText = "Office Number: ";
-    }else if(employee.title === "Engineer"){
-        title = employee.github;
+    }else if(employee.role === "Engineer"){
+        role = employee.github;
         htmlText = "GitHub: ";
     }else {
-        title = employee.school
+        role = employee.school
         htmlText = "School: ";
     }    
     return `<div class="card">
     <div class="card-header bg-primary">
       <h2 class="text-white">${employee.name}</h2>
-      <h3 class="text-white">${employee.title}</h3></div>
+      <h3 class="text-white">${employee.role}</h3></div>
     <div class="card-body">
     <p class="card-text"><strong>ID: </strong>${employee.id}</p>
       <p class="card-text"><strong>Email: </strong>${employee.email}</p>
-      <p class="card-text"><strong>${htmlText}</strong>${title}</p>
+      <p class="card-text"><strong>${htmlText}</strong>${employee.managerPrompt}</p>
     </div>
   </div>`
     }).join("");
