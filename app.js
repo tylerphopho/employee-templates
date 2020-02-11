@@ -84,32 +84,33 @@ function promptIntern() {
 
 // Runs the APP
 async function init() {
-    try {
-        let {name} = await promptName();
-        let {id} = await promptID();
-        let {email} = await promptEmail();
-        const {role} = await promptRole();
-        switch(role) {
-            case "Manager":
-                let {officeNumber} = await promptManager();
-                let manager = new Manager(name, id, email, role, officeNumber)
-                employeeArray.push(manager)
-                console.log("New Manager added!");
-                break;
-            case "Engineer":
-                const {github} = await promptEngineer(name, id, email, role);
-                let engineer = new Engineer(name, id, email, role, github)
-                employeeArray.push(engineer)
-                console.log("New Engineer added!");
-                break;
-            case "Intern":
-                const {school} = await promptIntern(name, id, email, role);
-                let intern = new Intern(name, id, email, role, school)
-                employeeArray.push(intern)
-                console.log("New Intern added!");
-                break;
+    do {
+        try {
+            let {name} = await promptName();
+            let {id} = await promptID();
+            let {email} = await promptEmail();
+            const {role} = await promptRole();
+            switch(role) {
+                case "Manager":
+                    let {officeNumber} = await promptManager();
+                    let manager = new Manager(name, id, email, role, officeNumber)
+                    employeeArray.push(manager)
+                    console.log("New Manager added!");
+                    break;
+                case "Engineer":
+                    const {github} = await promptEngineer(name, id, email, role);
+                    let engineer = new Engineer(name, id, email, role, github)
+                    employeeArray.push(engineer)
+                    console.log("New Engineer added!");
+                    break;
+                case "Intern":
+                    const {school} = await promptIntern(name, id, email, role);
+                    let intern = new Intern(name, id, email, role, school)
+                    employeeArray.push(intern)
+                    console.log("New Intern added!");
+                    break;
+            }
         }
-    }
     catch(err){
         console.log(err);
     }
@@ -119,10 +120,10 @@ async function init() {
         message: "Would you like to add another employee?",
         choices: ["Yes", "No"]
     });
-}while (done.finish === "Yes")
+}while (done.add === "Yes")
 console.log(employeeArray)
 
-let employeeCards = employeeArray.map((team) =>{
+let employeeCards = employeeArray.map((employee) =>{
     console.log(employee)
     let role;
     let htmlText;
@@ -150,7 +151,7 @@ let employeeCards = employeeArray.map((team) =>{
 
 
     //generates the HTML file in the output folder
-    const createHTML = generateHTML(teamCards);
-    writeFile("./output/Team.html",createHTML);
-
+    const createHTML = generateHTML(employeeCards);
+    writeFile("./templates/main.html",createHTML);
+    }
 init();
