@@ -16,12 +16,27 @@ const generateCard = require("./templates/generateHTML");
 let employeeArray = [];
 let employeeCards = "";
 
+// Validates users input
+function validateString(string){
+    return string !== '';
+}
+
+function validateNumber(number){
+    var reg = /^\d+$/;
+    return reg.test(number) || "Must enter a number!";
+}
+
+function validateEmail(email){
+    return /\S+@\S+\.\S+/.test(email)
+}
+
 // Inquirer prompts for user inputs
 function promptName() {
     const name = inquirer.prompt({
         type: "input",
         message: "What is your Employee's fist and last name?",
-        name: "name"
+        name: "name",
+        validate: validateString
     });
     return name;
 }
@@ -30,7 +45,8 @@ function promptID() {
     const id = inquirer.prompt({
         type: "input",
         message: "What is your Employee's ID number?",
-        name: "id"
+        name: "id",
+        validate: validateNumber
     });
     return id;
 }
@@ -39,7 +55,8 @@ function promptEmail() {
     const email = inquirer.prompt({
         type: "input",
         message: "What is your Employee's company email?",
-        name: "email"
+        name: "email",
+        validate: validateEmail
     });
     return email;
 }
@@ -55,30 +72,33 @@ function promptRole(){
 }
 
 function promptManager() {
-    const officeNumber = inquirer.prompt({
+    const managerPrompt = inquirer.prompt({
         type: "input",
         message: "What is your Manager's office number?",
         name: "officeNumber",
+        validate: validateNumber
     });
-    return officeNumber;
+    return managerPrompt;
 }
 
 function promptEngineer() {
-    const github = inquirer.prompt({
+    const engineerPrompt = inquirer.prompt({
         type: "input",
         message: "What is the Engineer's GitHub username?",
-        name: "username"
+        name: "username",
+        validate: validateString
     });
-    return github;
+    return engineerPrompt;
 }
 
 function promptIntern() {
-    const school = inquirer.prompt ({
+    const internPrompt = inquirer.prompt ({
         type: "input",
         message: "What school does the Intern attend?",
-        name: "school"
+        name: "school",
+        validate: validateString
     })
-    return school;
+    return internPrompt;
 }
 
 
@@ -92,21 +112,21 @@ async function init() {
             const {role} = await promptRole();
             switch(role) {
                 case "Manager":
-                    let {officeNumber} = await promptManager();
-                    let manager = new Manager(name, id, email, role, officeNumber)
-                    employeeArray.push(manager)
+                    let {managerPrompt} = await promptManager(role);
+                    let newManager = new Manager(name, id, email, role, managerPrompt)
+                    employeeArray.push(newManager)
                     console.log("New Manager added!");
                     break;
                 case "Engineer":
-                    const {github} = await promptEngineer(name, id, email, role);
-                    let engineer = new Engineer(name, id, email, role, github)
-                    employeeArray.push(engineer)
+                    let {engineerPrompt} = await promptEngineer(role);
+                    let newEngineer = new Engineer(name, id, email, role, engineerPrompt)
+                    employeeArray.push(newEngineer)
                     console.log("New Engineer added!");
                     break;
                 case "Intern":
-                    const {school} = await promptIntern(name, id, email, role);
-                    let intern = new Intern(name, id, email, role, school)
-                    employeeArray.push(intern)
+                    let {internPrompt} = await promptIntern(role);
+                    let newIntern = new Intern(name, id, email, role, internPrompt)
+                    employeeArray.push(newIntern)
                     console.log("New Intern added!");
                     break;
             }
@@ -125,26 +145,26 @@ console.log(employeeArray)
 
 let employeeCards = employeeArray.map((employee) =>{
     console.log(employee)
-    let role;
+    let title;
     let htmlText;
-    if(employee.role === "Manager"){
-        role = employee.officeNumber;
+    if(employee.title === "Manager"){
+        title = employee.officeNumber;
         htmlText = "Office Number: ";
-    }else if(employee.role === "Engineer"){
-        role = employee.github;
+    }else if(employee.title === "Engineer"){
+        title = employee.github;
         htmlText = "GitHub: ";
     }else {
-        role = employee.school
+        title = employee.school
         htmlText = "School: ";
     }    
     return `<div class="card">
     <div class="card-header bg-primary">
       <h2 class="text-white">${employee.name}</h2>
-      <h3 class="text-white">${employee.role}</h3></div>
+      <h3 class="text-white">${employee.title}</h3></div>
     <div class="card-body">
     <p class="card-text"><strong>ID: </strong>${employee.id}</p>
       <p class="card-text"><strong>Email: </strong>${employee.email}</p>
-      <p class="card-text"><strong>${htmlText}</strong>${role}</p>
+      <p class="card-text"><strong>${htmlText}</strong>${title}</p>
     </div>
   </div>`
     }).join("");
