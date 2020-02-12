@@ -5,7 +5,8 @@
   "main": "app.js",
   "directories": {
     "lib": "lib",
-    "test": "test"
+    "test": "test",
+    }
   },
   "scripts": {
     "test": "jest --verbose test/*"
