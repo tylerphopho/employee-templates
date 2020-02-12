@@ -3,6 +3,5 @@
   
   <h2>Instructions</h2>
     Getting started with the application you first must install the NPM packages by typing in { npm i } in the terminal.
-  After the installion, you will be given prompts to gather the Employee's information and role. (Each role will be given       certain prompts based off their position).
-  
+  After the installion, you will be given prompts to gather the Employee's information and role. (Each role will be given       certain prompts based off their position). Once all prompts have been answered you may answer the next prompt to add another   Employee.
   
