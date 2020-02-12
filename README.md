@@ -11,8 +11,10 @@
 
 Jason Heap (TA)
 Jason helped me display the correct information given to the employee's role.
+
 Khris Walters (TA)
 Khris gave me the inquirer prompts to gain the user inputs for each role.
+
 [Eric Wong](https://github.com/Ericcwong)
 Eric helped with displaying the employee's information to the HTML.
 
