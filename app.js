@@ -171,6 +171,6 @@ let employeeCards = employeeArray.map((employee) =>{
 
     //generates the HTML file in the output folder
     const createHTML = generateHTML(employeeCards);
-    writeFile("./templates/main.html",createHTML);
+    writeFile("./output/team.html", createHTML);
     }
 init();
