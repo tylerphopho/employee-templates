@@ -71,69 +71,63 @@ function promptRole(){
 }
 
 function promptManager() {
-    const managerPrompt = inquirer.prompt({
+    const officeNumber = inquirer.prompt({
         type: "input",
         message: "What is your Manager's office number?",
         name: "officeNumber",
         validate: validateNumber
     });
 
-    // console.log(managerPrompt);
-    return managerPrompt;
+    return officeNumber;
 }
 
 function promptEngineer() {
-    const engineerPrompt = inquirer.prompt({
+    const username = inquirer.prompt({
         type: "input",
         message: "What is the Engineer's GitHub username?",
         name: "username",
         validate: validateString
     });
-    return engineerPrompt;
+    return username;
 }
 
 function promptIntern() {
-    const internPrompt = inquirer.prompt ({
+    const school = inquirer.prompt ({
         type: "input",
-        message: "What school does the Intern attend?",
+        message: "Where does the Intern attend?",
         name: "school",
         validate: validateString
     })
-    return internPrompt;
+    return school;
 }
 
 
 // Runs the APP
 async function init() {
+
     do {
         try {
             let {name} = await promptName();
             let {id} = await promptID();
             let {email} = await promptEmail();
             const {role} = await promptRole();
-            switch(role) {
 
-                case "Manager":
-                    let {managerPrompt} = await promptManager(role);
-                    let newManager = new Manager(name, id, email, role, managerPrompt)
-                    employeeArray.push(newManager)
-                    console.log("New Manager added!");
-                    console.log(newManager, "NM")
-                    break;
-
-                case "Engineer":
-                    let {engineerPrompt} = await promptEngineer(role);
-                    let newEngineer = new Engineer(name, id, email, role, engineerPrompt)
-                    employeeArray.push(newEngineer)
-                    console.log("New Engineer added!");
-                    break;
-
-                case "Intern":
-                    let {internPrompt} = await promptIntern(role);
-                    let newIntern = new Intern(name, id, email, role, internPrompt)
-                    employeeArray.push(newIntern)
-                    console.log("New Intern added!");
-                    break;
+            let employeeRole;
+            if(role === "Manager"){
+                employeeRole = await promptManager();
+                let manager = new Manager(name, id, email, employeeRole.officeNumber);
+                employeeArray.push(manager);
+                console.log("New Manger added!");
+            } else if (role === "Engineer"){
+                employeeRole = await promptEngineer();
+                let engineer = new Engineer(name, id, email, employeeRole.username);
+                employeeArray.push(engineer);
+                console.log("New Engineer added!");
+            } else if (role === "Intern"){
+                employeeRole = await promptIntern();
+                let intern = new Intern(name, id, email, employeeRole.school);
+                employeeArray.push(intern);
+                console.log("New Intern added!");
             }
         }
     catch(err){
@@ -169,7 +163,7 @@ let employeeCards = employeeArray.map((employee) =>{
     <div class="card-body">
     <p class="card-text"><strong>ID: </strong>${employee.id}</p>
       <p class="card-text"><strong>Email: </strong>${employee.email}</p>
-      <p class="card-text"><strong>${htmlText}</strong>${employee.managerPrompt}</p>
+      <p class="card-text"><strong>${htmlText}</strong>${role}</p>
     </div>
   </div>`
     }).join("");
